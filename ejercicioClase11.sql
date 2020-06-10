@@ -59,4 +59,4 @@ FROM (SELECT concat(a.first_name, " ", a.last_name) AS actor, COUNT(fa.actor_id)
 	FROM actor a, film_actor fa
 	where a.actor_id = fa.actor_id
 	GROUP BY actor
-	order by amount_featured desc limit 1) as a
+	order by film_count desc limit 1
