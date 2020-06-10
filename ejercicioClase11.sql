@@ -54,9 +54,14 @@ GROUP BY store_id;
 
 "8)¿Qué actor ha aparecido en la mayoría de las películas?"
 
-SELECT 	actor
-FROM (SELECT concat(a.first_name, " ", a.last_name) AS actor, COUNT(fa.actor_id) as amount_featured
-	FROM actor a, film_actor fa
-	where a.actor_id = fa.actor_id
-	GROUP BY actor
-	order by film_count desc limit 1
+SELECT concat(a.first_name," ", a.last_name )as actor , count(*) as peliculas from actor a
+INNER JOIN film_actor USING (actor_id)
+INNER JOIN film using(film_id)
+GROUP BY a.actor_id
+HAVING peliculas = (SELECT MAX(counted) FROM
+(    SELECT COUNT(*) AS counted
+      FROM actor
+      INNER JOIN film_actor USING (actor_id)
+	    INNER JOIN film USING(film_id)
+      GROUP BY actor.actor_id
+)as counts);
